@@ -82,4 +82,26 @@ class UserController extends Controller
         // On redirige l'utilisateur vers la liste des articles (avec un flash)
         return redirect()->route('dashboard')->with('success', 'Article mis à jour !');
     }
+
+    public function remove(Article $article) {
+        // On vérifie que l'utilisateur est bien le créateur de l'article
+        if ($article->user_id !== Auth::user()->id) {
+            abort(403);
+        }
+        return view('articles.remove', ['article' => $article]);
+    }
+
+    public function destroy(Article $article)
+    {
+        // On vérifie que l'utilisateur est bien le créateur de l'article
+        if ($article->user_id !== Auth::user()->id) {
+            abort(403);
+        }
+
+        // On supprime l'article
+        $article->delete();
+
+        // On redirige l'utilisateur vers la liste des articles (avec un flash)
+        return redirect()->route('dashboard')->with('success', 'Article supprimé !');
+    }
 }

@@ -31,6 +31,12 @@
                             <a href="{{ route('articles.edit', $article->id) }}" class="text-red-500 hover:text-red-700">Modifier</a>
                         </div>
                         @endif
+                        <!-- Link to delate article -->
+                        @if ($article->user_id === Auth::id())
+                            <div class="text-right">
+                                <a href="{{ route('articles.remove', $article->id) }}" class="text-red-500 hover:text-red-700">Supprimer</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach
