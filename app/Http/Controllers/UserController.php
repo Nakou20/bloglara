@@ -43,8 +43,8 @@ class UserController extends Controller
         // On récupère l'utilisateur connecté.
         $user = Auth::user();
 
-        // On récupère les articles de l'utilisateur connecté.
-        $articles = Article::where('user_id', $user->id)->get();
+        // On récupère tous les articles.
+        $articles = Article::all();
 
         return view('dashboard', [
             'articles' => $articles

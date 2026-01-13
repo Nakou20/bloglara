@@ -26,9 +26,11 @@
                             <a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-300">Lire plus &rarr;</a>
                         </div>
                         <!-- Link to edit article -->
+                        @if ($article->user_id === Auth::id())
                         <div class="text-right">
                             <a href="{{ route('articles.edit', $article->id) }}" class="text-red-500 hover:text-red-700">Modifier</a>
                         </div>
+                        @endif
                     </div>
                 </div>
             @endforeach

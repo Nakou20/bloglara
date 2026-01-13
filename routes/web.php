@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::post('/articles/store', [UserController::class, 'store'])->name('articles.store');
 Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -15,7 +15,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/articles/create', [UserController::class, 'create'])->name('articles.create');
-    Route::post('/articles/store', [UserController::class, 'store'])->name('articles.store');
     Route::get('/articles/{article}/edit', [UserController::class, 'edit'])->name('articles.edit');
     Route::post('/articles/{article}/update', [UserController::class, 'update'])->name('articles.update');
 });
