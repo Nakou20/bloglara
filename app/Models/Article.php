@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Article extends Model
 {
+
 	protected $table = 'articles';
 
 	protected $casts = [
@@ -63,4 +64,5 @@ class Article extends Model
 	{
 		return $this->hasMany(Comment::class);
 	}
+
 }
