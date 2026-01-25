@@ -21,10 +21,19 @@ class PublicController extends Controller
     }
     public function show(User $user, Article $article)
     {
-        // $user est l'utilisateur de l'article
-        // $article est l'article à afficher
+        // On vérifie que l'article appartient bien à l'utilisateur
+        if ($article->user_id !== $user->id) {
+            abort(404);
+        }
 
-        // Je vous laisse faire le code
-        // N'oubliez pas de vérifier que l'article est publié (draft == 0)
+        // On vérifie que l'article est publié (draft == 0)
+        if ($article->draft) {
+             abort(404);
+        }
+
+        return view('public.show', [
+            'article' => $article,
+            'user' => $user
+        ]);
     }
 }

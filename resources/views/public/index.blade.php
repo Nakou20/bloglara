@@ -8,15 +8,15 @@
     <div>
         <!-- Articles -->
         @foreach ($articles as $article)
-            <div>
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h2 class="text-2xl font-bold">{{ $article->title }}</h2>
-                    <p class="text-gray-700 dark:text-gray-300">{{ substr($article->content, 0, 30) }}...</p>
-
-                    <a href="{{ route('public.show', [$article->user_id, $article->id]) }}" class="text-red-500 hover:text-red-700">Lire la suite</a>
-                </div>
+        <div>
+            <div class="p-6 text-gray-900 dark:text-gray-100">
+                <h2 class="text-2xl font-bold">{{ $article->title }}</h2>
+                <p class="text-gray-700 dark:text-gray-300">{{ substr($article->content, 0, 30) }}...</p>
+                
+                <a href="{{ route('public.show', [$article->user_id, $article->id]) }}" class="text-red-500 hover:text-red-700">Lire la suite</a>
             </div>
-            <hr>
+        </div>
+        <hr>
         @endforeach
     </div>
 </x-guest-layout>

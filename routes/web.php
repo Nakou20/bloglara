@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::post('/articles/store', [UserController::class, 'store'])->name('articles.store');
 Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
 
@@ -22,3 +24,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/{user}', [PublicController::class, 'index'])->name('public.index');
+Route::get('/{user}/{article}', [PublicController::class, 'show'])->name('public.show');

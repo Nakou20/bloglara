@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -17,6 +18,7 @@
             }
         </script>
     </head>
+
     <body class="antialiased font-sans bg-white dark:bg-gray-900">
         <!-- Header Navigation -->
         <nav class="fixed top-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 z-50 shadow-sm">
