@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Laravel') }} - Plateforme de Blogging Moderne</title>
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script>
@@ -17,80 +17,32 @@
             }
         </script>
     </head>
-    <body class="antialiased font-sans text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-900">
-        <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-red-500 selection:text-white">
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                    <div class="flex lg:justify-center lg:col-start-2">
-                        <x-application-logo class="h-12 w-auto text-gray-800 dark:text-gray-200 fill-current" />
-                    </div>
-                    @if (Route::has('login'))
-                        <nav class="-mx-3 flex flex-1 justify-end">
-                            <x-theme-toggle />
-                            @auth
-                                <a
-                                    href="{{ url('/dashboard') }}"
-                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                >
-                                    Dashboard
+    <body class="antialiased font-sans bg-white dark:bg-gray-900">
+        <!-- Header Navigation -->
+        <nav class="fixed top-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <!-- Left side - Boutons -->
+                    <div class="flex items-center space-x-6">
+                        @if (Route::has('login'))
+                                <a href="{{ route('login') }}" class="px-6 py-2.5 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition-colors duration-200">
+                                    Se connecter
                                 </a>
-                            @else
-                                <a
-                                    href="{{ route('login') }}"
-                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                >
-                                    Log in
-                                </a>
-
                                 @if (Route::has('register'))
-                                    <a
-                                        href="{{ route('register') }}"
-                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                    >
-                                        Register
+                                    <a href="{{ route('register') }}" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                                        S'inscrire
                                     </a>
                                 @endif
-                            @endauth
-                        </nav>
-                    @endif
-                </header>
 
-                <main class="mt-6">
-                    <div class="text-center">
-                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-                            Bienvenue sur <span class="text-indigo-600 dark:text-indigo-400">BlogLara</span>
-                        </h1>
-                        <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                            La plateforme moderne pour partager vos idées, vos histoires et votre créativité. 
-                            Rejoignez notre communauté et commencez à écrire dès aujourd'hui.
-                        </p>
-                        <div class="mt-10 flex items-center justify-center gap-x-6">
-                            <a href="{{ route('register') }}" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                Commencer
-                            </a>
-                            <a href="{{ route('login') }}" class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                                Se connecter <span aria-hidden="true">→</span>
-                            </a>
-                        </div>
+                        @endif
                     </div>
 
-                    <div class="mt-16 flow-root sm:mt-24">
-                        <div class="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 dark:bg-gray-100/5 dark:ring-gray-100/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-                            <!-- Placeholder for a hero image or dashboard screenshot -->
-                            <div class="rounded-md bg-white dark:bg-gray-800 shadow-2xl ring-1 ring-gray-900/10 dark:ring-gray-100/10 h-64 sm:h-96 flex items-center justify-center text-gray-400 dark:text-gray-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                                </svg>
-                                <span class="ml-4 text-xl font-medium">Capture d'écran de l'application</span>
-                            </div>
-                        </div>
+                    <!-- Right side - Logo -->
+                    <div class="flex items-center">
+                        <x-application-logo class="h-12 w-auto text-indigo-600 dark:text-indigo-400 fill-current" />
                     </div>
-                </main>
-
-                <footer class="py-16 text-center text-sm text-gray-500 dark:text-gray-400">
-                    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-                </footer>
+                </div>
             </div>
-        </div>
-    </body>
-</html>
+        </nav>
+
+

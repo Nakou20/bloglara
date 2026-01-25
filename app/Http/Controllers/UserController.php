@@ -104,4 +104,22 @@ class UserController extends Controller
         // On redirige l'utilisateur vers la liste des articles (avec un flash)
         return redirect()->route('dashboard')->with('success', 'Article supprimé !');
     }
+
+    // Page publique d'accueil listant les articles non-brouillon
+    public function publicIndex()
+    {
+        $articles = Article::where('draft', 0)->latest()->get();
+        return view('welcome', ['articles' => $articles]);
+    }
+
+    // Page show pour afficher un article complet
+    public function show(Article $article)
+    {
+        // Si l'article est en draft, seul l'auteur peut le voir
+        if ($article->draft && (!Auth::check() || Auth::id() !== $article->user_id)) {
+            abort(404);
+        }
+
+        return view('articles.show', ['article' => $article]);
+    }
 }
