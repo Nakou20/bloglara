@@ -9,35 +9,26 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <!-- Dark Mode Detection & Application -->
-        <script>
-            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        </script>
+        <!-- Suppression de la détection du mode sombre pour forcer le thème clair -->
     </head>
 
     <!-- Force le fond en blanc et le texte en gris très sombre pour une lisibilité maximale -->
-    <body class="antialiased font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300">
+    <body class="antialiased font-sans bg-white text-gray-900 min-h-screen">
         <!-- Header Navigation -->
         <!-- Barres de navigation avec fond blanc (semi-transparent) et bordure claire -->
-        <nav class="fixed top-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-b border-gray-100 dark:border-gray-800 z-50 shadow-sm transition-colors duration-300">
+        <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-lg border-b border-gray-100 z-50 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16 lg:h-20">
                     <!-- Left side - Logo -->
                     <div class="flex items-center">
                         <a href="/" class="flex items-center gap-2.5 group">
                             <x-application-logo class="h-9 w-auto text-indigo-600 fill-current transition-transform duration-300 ease-out group-hover:scale-110" />
-                            <span class="font-bold text-lg lg:text-xl text-gray-900 dark:text-gray-100 tracking-tight">Tortue Blog</span>
+                            <span class="font-bold text-lg lg:text-xl text-gray-900 tracking-tight">Tortue Blog</span>
                         </a>
                     </div>
 
                     <!-- Right side - Actions -->
-                <div class="flex items-center gap-3 lg:gap-4">
-                        <x-theme-toggle />
+                    <div class="flex items-center gap-3 lg:gap-4">
                         @if (Route::has('login'))
                             @auth
                                 <a href="{{ route('dashboard') }}" class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
@@ -61,17 +52,18 @@
 
         <!-- Hero Section -->
         <div class="relative pt-24 pb-8 sm:pt-32 sm:pb-12 lg:pt-40 lg:pb-16 overflow-hidden">
+            <!-- Éléments de fond colorés (plus doux pour le thème clair) -->
             <div class="absolute inset-0 -z-10 overflow-hidden">
-                <div class="absolute top-0 left-1/4 w-72 h-72 bg-purple-100/50 dark:bg-purple-900/20 rounded-full blur-3xl"></div>
-                <div class="absolute top-20 right-1/4 w-96 h-96 bg-indigo-100/50 dark:bg-indigo-900/20 rounded-full blur-3xl"></div>
-                <div class="absolute bottom-0 left-1/2 w-80 h-80 bg-pink-100/40 dark:bg-pink-900/10 rounded-full blur-3xl"></div>
+                <div class="absolute top-0 left-1/4 w-72 h-72 bg-purple-100/50 rounded-full blur-3xl"></div>
+                <div class="absolute top-20 right-1/4 w-96 h-96 bg-indigo-100/50 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-1/2 w-80 h-80 bg-pink-100/40 rounded-full blur-3xl"></div>
             </div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-4xl sm:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-6">
+                <h1 class="text-4xl sm:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
                     Découvrez des <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">histoires</span> passionnantes
                 </h1>
-                <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400 mb-10">
+                <p class="max-w-2xl mx-auto text-lg text-gray-600 mb-10">
                     Explorez les dernières actualités, tutoriels et réflexions de notre communauté d'auteurs passionnés.
                 </p>
 
@@ -91,7 +83,7 @@
                             name="tag" 
                             value="{{ $selectedTag }}"
                             placeholder="Rechercher par tag (ex: Laravel, PHP...)" 
-                            class="block w-full pl-11 pr-24 py-4 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-2xl shadow-xl focus:border-indigo-500 focus:ring-0 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-300"
+                            class="block w-full pl-11 pr-24 py-4 bg-white border-2 border-gray-100 rounded-2xl shadow-xl focus:border-indigo-500 focus:ring-0 text-gray-900 placeholder-gray-400 transition-all duration-300"
                         >
 
                         <!-- Bouton de recherche -->
@@ -128,7 +120,7 @@
             <div class="mb-10 lg:mb-14">
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-1.5 h-10 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"></div>
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
                         @if($selectedTag)
                             Articles marqués #{{ $selectedTag }}
                         @else
@@ -136,7 +128,7 @@
                         @endif
                     </h2>
                     </div>
-                <p class="text-gray-600 dark:text-gray-400 ml-6 lg:ml-7">
+                <p class="text-gray-600 ml-6 lg:ml-7">
                     @if($selectedTag)
                         Affichage des articles liés au tag "{{ $selectedTag }}"
                     @else

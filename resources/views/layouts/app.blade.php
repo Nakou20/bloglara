@@ -13,18 +13,10 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <!-- Dark Mode Detection & Application -->
-        <script>
-            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        </script>
+        <!-- Suppression du script de mode sombre pour forcer le thème clair -->
     </head>
-    <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-white">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

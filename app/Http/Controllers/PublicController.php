@@ -32,28 +32,9 @@ class PublicController extends Controller
              abort(404);
         }
 
-        // Récupération des articles similaires (basés sur les tags ou catégories)
-        $tagIds = $article->tags->pluck('id');
-        $categoryIds = $article->categories->pluck('id');
-
-        $similarArticles = Article::where('id', '!=', $article->id)
-            ->where('draft', 0)
-            ->where(function ($query) use ($tagIds, $categoryIds) {
-                $query->whereHas('tags', function ($q) use ($tagIds) {
-                    $q->whereIn('tags.id', $tagIds);
-                })->orWhereHas('categories', function ($q) use ($categoryIds) {
-                    $q->whereIn('categories.id', $categoryIds);
-                });
-            })
-            ->with(['user', 'categories', 'tags'])
-            ->latest()
-            ->take(3)
-            ->get();
-
         return view('public.show', [
             'article' => $article,
-            'user' => $user,
-            'similarArticles' => $similarArticles
+            'user' => $user
         ]);
     }
 }

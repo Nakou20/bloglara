@@ -17,7 +17,9 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen bg-white">
-            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            @include('layouts.navigation')
+
+            <div class="max-w-7xl mx-auto px-8 py-12">
                 {{ $slot }}
             </div>
         </div>
