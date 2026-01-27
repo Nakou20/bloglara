@@ -133,24 +133,5 @@ Tests
 php artisan test
 ```
 
-Dépannage rapide
-----------------
-- Erreur SQL FK lors de suppression d'article : vérifier que le modèle `Article` détache les relations avant suppression.
-- Images de profil non visibles : vérifier `php artisan storage:link` et que `profile_photo` contient le bon chemin (ex: `profiles/monfichier.jpg`).
-- Modifications non prises en compte : vérifier la branche Git courante (`git branch`) et faire `git pull`.
 
-Bonnes pratiques
-----------------
-- Commits fréquents et messages clairs
-- Tester localement avant de forcer un push sur `master`
-- Faire une sauvegarde (tag ou branche) de l'ancien `master` avant d'écraser
-
-Besoin d'aide supplémentaire ?
------------------------------
-Je peux :
-- ajouter un guide pas-à-pas pour le déploiement (Forge / Docker / Capistrano)
-- créer des tests automatisés pour la suppression et l'upload de la photo de profil
-- ajouter un script d'initialisation pour dev (setup.sh/ps1)
-
-Dis-moi ce que tu veux que j'ajoute ou modifie dans ce README, ou si tu veux que je l'enregistre directement dans le dépôt (je peux créer/mettre à jour `README.md`).
 
