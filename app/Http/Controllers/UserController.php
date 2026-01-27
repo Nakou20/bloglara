@@ -13,10 +13,10 @@ class UserController extends Controller
     {
         // Récupérer toutes les catégories pour les afficher dans le formulaire
         $categories = Category::all();
-        
+
         // Récupérer tous les tags pour les afficher dans le formulaire
         $tags = Tag::all();
-        
+
         return view('articles.create', [
             'categories' => $categories,
             'tags' => $tags
@@ -24,11 +24,28 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        // On récupère les données du formulaire
+        // Validation des données (si manquant -> redirection avec erreurs)
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+            'draft' => ['sometimes', 'boolean'],
+            'categories' => ['nullable', 'array'],
+            'categories.*' => ['integer', 'exists:categories,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
+            'new_tags' => ['nullable', 'string'],
+        ], [
+            'title.required' => 'Le titre est requis.',
+            'content.required' => 'Le contenu est requis.',
+            'categories.*.exists' => 'Une catégorie sélectionnée est invalide.',
+            'tags.*.exists' => 'Un tag sélectionné est invalide.',
+        ]);
+
+        // On récupère les données validées
         $data = $request->only(['title', 'content', 'draft']);
 
         // Créateur de l'article (auteur)
-        $data['user_id'] = Auth::user()->id;
+        $data['user_id'] = Auth::id();
 
         // Gestion du draft
         $data['draft'] = isset($data['draft']) ? 1 : 0;
@@ -60,7 +77,7 @@ class UserController extends Controller
         $article->tags()->sync(array_unique($tagIds));
 
         // On redirige l'utilisateur vers la liste des articles
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'Article créé avec succès.');
     }
 
     public function index()
@@ -75,11 +92,11 @@ class UserController extends Controller
             'articles' => $articles
         ]);
     }
-    
+
     public function edit(Article $article)
     {
         // On vérifie que l'utilisateur est bien le créateur de l'article
-        if ($article->user_id !== Auth::user()->id) {
+        if ($article->user_id !== Auth::id()) {
             abort(403);
         }
 
@@ -100,11 +117,28 @@ class UserController extends Controller
     public function update(Request $request, Article $article)
     {
         // On vérifie que l'utilisateur est bien le créateur de l'article
-        if ($article->user_id !== Auth::user()->id) {
+        if ($article->user_id !== Auth::id()) {
             abort(403);
         }
 
-        // On récupère les données du formulaire
+        // Validation des données (si manquant -> redirection avec erreurs)
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+            'draft' => ['sometimes', 'boolean'],
+            'categories' => ['nullable', 'array'],
+            'categories.*' => ['integer', 'exists:categories,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
+            'new_tags' => ['nullable', 'string'],
+        ], [
+            'title.required' => 'Le titre est requis.',
+            'content.required' => 'Le contenu est requis.',
+            'categories.*.exists' => 'Une catégorie sélectionnée est invalide.',
+            'tags.*.exists' => 'Un tag sélectionné est invalide.',
+        ]);
+
+        // On récupère les données validées
         $data = $request->only(['title', 'content', 'draft']);
 
         // Gestion du draft
@@ -142,7 +176,7 @@ class UserController extends Controller
 
     public function remove(Article $article) {
         // On vérifie que l'utilisateur est bien le créateur de l'article
-        if ($article->user_id !== Auth::user()->id) {
+        if ($article->user_id !== Auth::id()) {
             abort(403);
         }
         return view('articles.remove', ['article' => $article]);
@@ -151,7 +185,7 @@ class UserController extends Controller
     public function destroy(Article $article)
     {
         // On vérifie que l'utilisateur est bien le créateur de l'article
-        if ($article->user_id !== Auth::user()->id) {
+        if ($article->user_id !== Auth::id()) {
             abort(403);
         }
 

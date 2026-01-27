@@ -1,7 +1,7 @@
 @props(['article', 'index' => null, 'showAuthor' => true])
 <!-- Carte d'article avec fond blanc pur et bordure légère -->
 <article {{ $attributes->merge(['class' => 'group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 lg:p-8 border border-gray-100 hover:-translate-y-1']) }}>
-    
+
     <div class="flex items-start gap-6">
         <!-- Contenu principal -->
         <div class="flex-1 min-w-0">
@@ -12,41 +12,48 @@
                 </a>
             </h3>
 
-            <!-- Informations meta (date et auteur) en gris moyen -->
+            <!-- Informations meta (date, auteur, lecture) -->
             @if($showAuthor)
-                <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
-                    <div class="flex items-center gap-1.5">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="font-medium">{{ $article->created_at->format('d/m/Y') }}</span>
+                <div class="flex flex-col gap-2 text-sm text-gray-500 mb-4">
+                    <!-- Première ligne: Date et Auteur -->
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="font-medium">{{ $article->created_at->format('d/m/Y') }}</span>
+                        </div>
+                        <span class="text-gray-300">•</span>
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="font-medium">{{ $article->user->name }}</span>
+                        </div>
                     </div>
-                    <span class="text-gray-300">•</span>
+                    <!-- Deuxième ligne: Temps de lecture -->
                     <div class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span class="font-medium">{{ $article->user->name }}</span>
+                        <span class="font-medium">{{ $article->formattedReadingTime() }}</span>
                     </div>
                 </div>
             @endif
 
-            <!-- Extrait du contenu en gris sombre pour la lecture -->
+            <!-- Extrait du contenu -->
             <p class="text-gray-600 text-base lg:text-lg leading-relaxed mb-5 line-clamp-2">
                 {{ Str::limit($article->content, 180) }}
             </p>
 
-            <!-- Catégories & Tags avec des couleurs de contraste douces -->
+            <!-- Catégories & Tags -->
             @if($article->categories->isNotEmpty() || $article->tags->isNotEmpty())
                 <div class="flex flex-wrap gap-2 mt-4">
-                    <!-- Catégories en dégradé indigo/violet léger -->
                     @foreach($article->categories->take(3) as $category)
                         <span class="inline-flex items-center text-xs px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 font-semibold border border-indigo-100">
                             #{{ $category->name }}
                         </span>
                     @endforeach
-
-                    <!-- Tags en violet clair -->
                     @foreach($article->tags->take(5) as $tag)
                         <span class="inline-flex items-center text-xs px-3 py-1.5 rounded-full bg-purple-50 text-purple-600 font-medium border border-purple-100">
                             {{ $tag->name }}
@@ -74,7 +81,7 @@
         @endauth
     </div>
 
-    <!-- Badge de popularité avec fond ambre clair -->
+    <!-- Badge de popularité -->
     @if($index !== null && $index < 3)
         <div class="absolute top-4 left-0">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-r-full text-xs font-bold bg-amber-100 text-amber-700 border-y border-r border-amber-200">

@@ -49,6 +49,24 @@ class Article extends Model
 		'likes'
 	];
 
+	protected $appends = [
+		// expose reading_time if needed in JSON
+		// 'reading_time',
+	];
+
+	protected static function booted(): void
+	{
+		static::deleting(function (Article $article) {
+			// Détacher les relations many-to-many
+			$article->categories()->detach();
+			$article->tags()->detach();
+			$article->likers()->detach();
+
+			// Supprimer les enfants dépendants
+			$article->comments()->delete();
+		});
+	}
+
 	public function user()
 	{
 		return $this->belongsTo(User::class);
@@ -72,6 +90,22 @@ class Article extends Model
 	public function likers(): BelongsToMany
 	{
 		return $this->belongsToMany(User::class, 'article_likes');
+	}
+
+	public function getReadingTimeAttribute(): int
+	{
+		// Compte des mots sur le contenu
+		$text = strip_tags((string) $this->content);
+		$words = str_word_count($text, 0, 'ÀÂÄÇÉÈÊËÎÏÔÖÙÛÜàâäçéèêëîïôöùûü');
+		// Vitesse moyenne: 200 mots/min
+		$minutes = (int) ceil(max(1, $words) / 200);
+		return max(1, $minutes);
+	}
+
+	public function formattedReadingTime(): string
+	{
+		$m = $this->reading_time;
+		return $m <= 1 ? '~1 min de lecture' : "~$m min de lecture";
 	}
 
 }

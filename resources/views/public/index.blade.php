@@ -1,6 +1,6 @@
 <x-public-layout>
-    <div class="mb-8"> 
-        <h2 class="font-bold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+    <div class="mb-8">
+        <h2 class="font-bold text-xl text-gray-800 leading-tight">
             Liste des articles publiés de {{ $user->name }}
         </h2>
     </div>

@@ -9,7 +9,8 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <!-- Suppression de la détection du mode sombre pour forcer le thème clair -->
+
+        <!-- Pas de script de thème : dark mode désactivé -->
     </head>
 
     <!-- Force le fond en blanc et le texte en gris très sombre pour une lisibilité maximale -->
@@ -31,7 +32,7 @@
                     <div class="flex items-center gap-3 lg:gap-4">
                         @if (Route::has('login'))
                             @auth
-                                <a href="{{ route('dashboard') }}" class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                                <a href="{{ route('dashboard') }}" class="text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100">
                                     Espace Auteur
                                 </a>
                             @else
@@ -76,13 +77,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
-                        
+
                         <!-- Input de recherche avec fond blanc et bordure douce -->
-                        <input 
-                            type="text" 
-                            name="tag" 
+                        <input
+                            type="text"
+                            name="tag"
                             value="{{ $selectedTag }}"
-                            placeholder="Rechercher par tag (ex: Laravel, PHP...)" 
+                            placeholder="Rechercher par tag (ex: Laravel, PHP...)"
                             class="block w-full pl-11 pr-24 py-4 bg-white border-2 border-gray-100 rounded-2xl shadow-xl focus:border-indigo-500 focus:ring-0 text-gray-900 placeholder-gray-400 transition-all duration-300"
                         >
 
@@ -103,7 +104,7 @@
                                     #{{ $tag->name }}
                                 </a>
                             @endforeach
-                            
+
                             @if($selectedTag)
                                 <a href="/" class="ml-2 text-xs font-bold text-red-500 hover:text-red-600 transition-colors underline underline-offset-4">
                                     Effacer le filtre

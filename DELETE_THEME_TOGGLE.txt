@@ -1,0 +1,2 @@
+This script notes the removals. Delete the component file 'resources/views/components/theme-toggle.blade.php' and remove all occurrences of '<x-theme-toggle />' and remove 'dark:' prefixes in Blade views.
+

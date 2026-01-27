@@ -13,7 +13,8 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <!-- Suppression du script de mode sombre pour forcer le thème clair -->
+
+        <!-- Pas de script de thème : dark mode désactivé -->
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-white">

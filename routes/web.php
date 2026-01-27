@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     // On récupère le tag de recherche s'il existe dans l'URL
     $selectedTag = request()->query('tag');
-    
+
     // Construction de la requête pour les articles
     $query = \App\Models\Article::with('user', 'categories', 'tags')
         ->where('draft', false)
@@ -25,7 +25,7 @@ Route::get('/', function () {
     }
 
     $articles = $query->take(6)->get();
-    
+
     // On récupère tous les tags pour les afficher comme filtres sur la page d'accueil
     $allTags = \App\Models\Tag::has('articles')->get();
 

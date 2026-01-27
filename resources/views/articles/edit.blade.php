@@ -1,32 +1,49 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-900 dark:text-gray-100 leading-tight">
-            Modifier l'article <span class="text-indigo-600 dark:text-indigo-400">{{ $article->title }}</span>
+        <h2 class="font-semibold text-xl text-gray-900 leading-tight">
+            Modifier l'article <span class="text-indigo-600">{{ $article->title }}</span>
         </h2>
     </x-slot>
 
     <form method="post" action="{{ route('articles.update', $article->id) }}" class="py-12">
         @csrf
+
+        {{-- Affiche les erreurs de validation --}}
+        @if ($errors->any())
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-6">
+                <div class="rounded-md bg-red-50 p-4 border border-red-100">
+                    <div class="font-medium text-red-800">Il y a des erreurs dans le formulaire :</div>
+                    <ul class="mt-2 list-disc list-inside text-sm text-red-700">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg border border-gray-100 dark:border-gray-700">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-bold text-indigo-600 dark:text-indigo-400 mb-6 border-b border-gray-100 dark:border-gray-700 pb-2">Détails de l'article</h3>
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg border border-gray-100">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-bold text-indigo-600 mb-6 border-b border-gray-100 pb-2">Détails de l'article</h3>
 
                     <!-- Input de titre de l'article -->
                     <div class="mb-6">
-                        <label for="title" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Titre de l'article</label>
-                        <input type="text" name="title" id="title" value="{{ $article->title }}" placeholder="Quel est le nouveau titre ?" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-3 transition-colors">
+                        <label for="title" class="block text-sm font-bold text-gray-700 mb-2">Titre de l'article</label>
+                        <input type="text" name="title" id="title" value="{{ old('title', $article->title) }}" placeholder="Quel est le nouveau titre ?" class="w-full rounded-xl border-gray-200 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-3 transition-colors">
+                        @error('title')<p class="text-sm text-red-600 mt-2">{{ $message }}</p>@enderror
                     </div>
 
                     <!-- Contenu de l'article -->
                     <div class="mb-8">
-                        <label for="content" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Contenu</label>
-                        <textarea rows="15" name="content" id="content" placeholder="Mettez à jour votre histoire..." class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-3 px-4 transition-colors">{{ $article->content }}</textarea>
+                        <label for="content" class="block text-sm font-bold text-gray-700 mb-2">Contenu</label>
+                        <textarea rows="15" name="content" id="content" placeholder="Mettez à jour votre histoire..." class="w-full rounded-xl border-gray-200 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-3 px-4 transition-colors">{{ old('content', $article->content) }}</textarea>
+                        @error('content')<p class="text-sm text-red-600 mt-2">{{ $message }}</p>@enderror
                     </div>
 
                     <!-- Sélection des catégories -->
-                    <div class="mb-8 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700">
-                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Catégories</label>
+                    <div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Catégories</label>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             @foreach($categories as $category)
                                 <div class="flex items-center group cursor-pointer">
@@ -35,10 +52,10 @@
                                         name="categories[]"
                                         value="{{ $category->id }}"
                                         id="category-{{ $category->id }}"
-                                        {{ $article->categories->contains($category->id) ? 'checked' : '' }}
-                                        class="rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-indigo-600 shadow-sm focus:ring-indigo-500 w-5 h-5 transition-all group-hover:scale-110"
+                                        {{ in_array($category->id, (array) old('categories', $article->categories->pluck('id')->toArray())) ? 'checked' : '' }}
+                                        class="rounded-md border-gray-300 bg-white text-indigo-600 shadow-sm focus:ring-indigo-500 w-5 h-5 transition-all group-hover:scale-110"
                                     >
-                                    <label for="category-{{ $category->id }}" class="ml-3 text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200 cursor-pointer">
+                                    <label for="category-{{ $category->id }}" class="ml-3 text-sm font-medium text-gray-600 group-hover:text-gray-900 cursor-pointer">
                                         {{ $category->name }}
                                     </label>
                                 </div>
@@ -47,8 +64,8 @@
                     </div>
 
                     <!-- Sélection des tags existants -->
-                    <div class="mb-8 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-700">
-                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Tags existants</label>
+                    <div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Tags existants</label>
                         <div class="flex flex-wrap gap-4">
                             @foreach($tags as $tag)
                                 <div class="flex items-center group cursor-pointer">
@@ -57,11 +74,11 @@
                                         name="tags[]"
                                         value="{{ $tag->id }}"
                                         id="tag-{{ $tag->id }}"
-                                        {{ $article->tags->contains($tag->id) ? 'checked' : '' }}
-                                        class="rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-purple-600 shadow-sm focus:ring-purple-500 w-5 h-5 transition-all group-hover:scale-110"
+                                        {{ in_array($tag->id, (array) old('tags', $article->tags->pluck('id')->toArray())) ? 'checked' : '' }}
+                                        class="rounded-md border-gray-300 bg-white text-purple-600 shadow-sm focus:ring-purple-500 w-5 h-5 transition-all group-hover:scale-110"
                                     >
-                                    <label for="tag-{{ $tag->id }}" class="ml-3 text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200 cursor-pointer">
-                                        <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 transition-colors">
+                                    <label for="tag-{{ $tag->id }}" class="ml-3 text-sm font-medium text-gray-600 group-hover:text-gray-900 cursor-pointer">
+                                        <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200 transition-colors">
                                             #{{ $tag->name }}
                                         </span>
                                     </label>
@@ -72,9 +89,10 @@
 
                     <!-- Ajout de nouveaux tags par texte -->
                     <div class="mb-10">
-                        <label for="new_tags" class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Ajouter de nouveaux tags</label>
-                        <input type="text" name="new_tags" id="new_tags" placeholder="Séparez les tags par des virgules..." class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-purple-500 focus:ring-purple-500 py-3 transition-colors">
-                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-2 italic flex items-center gap-1">
+                        <label for="new_tags" class="block text-sm font-bold text-gray-700 mb-2">Ajouter de nouveaux tags</label>
+                        <input type="text" name="new_tags" id="new_tags" value="{{ old('new_tags') }}" placeholder="Séparez les tags par des virgules..." class="w-full rounded-xl border-gray-200 bg-white text-gray-900 shadow-sm focus:border-purple-500 focus:ring-purple-500 py-3 transition-colors">
+                        @error('new_tags')<p class="text-sm text-red-600 mt-2">{{ $message }}</p>@enderror
+                        <p class="text-xs text-gray-400 mt-2 italic flex items-center gap-1">
                             <svg class="w-3 h-3 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                             </svg>
@@ -85,8 +103,8 @@
                     <div class="flex items-center justify-between mt-6">
                         <!-- Action sur le formulaire -->
                         <div class="flex items-center group cursor-pointer">
-                            <input type="checkbox" name="draft" id="draft" {{ $article->draft ? 'checked' : '' }} class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 shadow-sm focus:ring-indigo-500 w-5 h-5 transition-transform group-hover:scale-110">
-                            <label for="draft" class="ml-3 text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200 cursor-pointer">Enregistrer comme brouillon</label>
+                            <input type="checkbox" name="draft" id="draft" {{ old('draft', $article->draft) ? 'checked' : '' }} class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 w-5 h-5 transition-transform group-hover:scale-110">
+                            <label for="draft" class="ml-3 text-sm font-medium text-gray-600 group-hover:text-gray-900 cursor-pointer">Enregistrer comme brouillon</label>
                         </div>
                         <div>
                             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md shadow transition duration-150 ease-in-out hover:scale-105">
