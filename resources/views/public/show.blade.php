@@ -14,4 +14,12 @@
             <p class="text-gray-700 dark:text-gray-300">{{ $article->content }}</p>
         </div>
     </div>
+    
+    <!-- Ajout d'un commentaire -->
+    <form action="{{ route('comments.store') }}" method="post" class="mt-6">
+        @csrf
+        <input type="hidden" name="articleId" value="{{ $article->id }}">
+        <textarea name="content" placeholder="Votre commentaire..." class="w-full p-2 border rounded"></textarea>
+        <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Commenter</button>
+    </form>
 </x-guest-layout>
