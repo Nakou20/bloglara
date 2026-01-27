@@ -1,59 +1,156 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Tortue Blog — README
+=====================
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+But du projet
+------------
+Tortue Blog est une application de blog Laravel + Tailwind permettant aux auteurs de publier des articles, gérer des catégories et tags, recevoir des likes et gérer leur profil (dont une photo de profil). Ce dépôt contient l'application, les vues Blade, des composants réutilisables et la logique serveur (controllers, models).
 
-## About Laravel
+Points clés
+-----------
+- Framework : Laravel (PHP)
+- Frontend : Tailwind CSS (Vite)
+- Base de données : SQLite (par défaut dans le dossier database) ou MySQL (configurable)
+- Fonctionnalités principales : création/édition/suppression d'articles, tags, catégories, likes, photo de profil, estimation du temps de lecture
+- Le thème sombre a été retiré (clean) pour éviter des incohérences visuelles
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Prérequis
+---------
+- PHP >= 8.x
+- Composer
+- Node.js & npm
+- Un serveur MySQL ou SQLite
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Installation (locale)
+---------------------
+1. Cloner le dépôt
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+cd ~
+git clone <URL_DU_DEPOT>
+cd bloglara
+```
 
-## Learning Laravel
+2. Installer les dépendances PHP et JS
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+composer install
+npm install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Copier le fichier d'environnement et générer une clé d'application
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Configurer la base de données
+- Par défaut le projet contient un fichier SQLite `database/database.sqlite`. Si tu veux utiliser MySQL, mets à jour `.env` (DB_CONNECTION, DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD).
 
-### Premium Partners
+5. Exécuter les migrations
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan migrate
+```
 
-## Contributing
+6. Créer le lien public pour le stockage (pour la photo de profil)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan storage:link
+```
 
-## Code of Conduct
+7. Construire les assets (dev ou prod)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- En développement (watch)
 
-## Security Vulnerabilities
+```bash
+npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Pour une build de production
 
-## License
+```bash
+npm run build
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+8. Lancer le serveur local
+
+```bash
+php artisan serve
+# puis ouvrir http://127.0.0.1:8000
+```
+
+Principales fonctionnalités et notes d'implémentation
+----------------------------------------------------
+- Photo de profil
+  - Les utilisateurs peuvent uploader une image depuis la page de profil.
+  - Les fichiers sont stockés dans `storage/app/public/profiles` et accessibles via `public/storage/profiles/...` après `php artisan storage:link`.
+  - La migration `2026_01_27_000001_add_profile_photo_to_users_table.php` ajoute la colonne `profile_photo` à `users`.
+
+- Temps de lecture estimé
+  - Calculé dans le modèle `Article` (200 mots/min), méthode `getReadingTimeAttribute()` et `formattedReadingTime()`.
+  - Affiché dans la carte d'article sous la date de publication.
+
+- Likes
+  - Les likes sont stockés en relation many-to-many (`article_likes` pivot table).
+  - Affichage et positionnement du badge "like" sur la carte d'article (composant `resources/views/components/article-card.blade.php`).
+
+- Suppression d'articles
+  - Avant suppression, les relations (categories, tags, likers) sont détachées et les commentaires liés sont supprimés, pour éviter les erreurs de contrainte FK.
+
+- Validation
+  - `UserController::store` et `update` (gestion des articles) intègrent maintenant une validation serveur : `title` et `content` sont requis.
+  - Les vues `create` et `edit` affichent les erreurs et conservent les valeurs précédemment saisies.
+
+Branches Git & historique
+-------------------------
+- La branche `dev` contient les dernières fonctionnalités (photo de profil, temps de lecture). Si tu veux que la branche `master` reflète `dev`, on peut faire un `reset --hard` puis un `push --force` (attention : cela réécrit l'historique distant et écrase master).
+
+Commandes Git utiles
+--------------------
+- Pour créer une branche locale à partir de `origin/dev` :
+
+```bash
+git fetch --all
+git checkout -b dev origin/dev
+```
+
+- Pour écraser `master` par `dev` (action irréversible : *vérifie bien*) :
+
+```bash
+git checkout master
+git reset --hard dev
+git push origin master --force
+```
+
+Tests
+-----
+- Si le projet contient des tests PHPUnit (dossier `tests/`), lance :
+
+```bash
+./vendor/bin/phpunit
+# ou
+php artisan test
+```
+
+Dépannage rapide
+----------------
+- Erreur SQL FK lors de suppression d'article : vérifier que le modèle `Article` détache les relations avant suppression.
+- Images de profil non visibles : vérifier `php artisan storage:link` et que `profile_photo` contient le bon chemin (ex: `profiles/monfichier.jpg`).
+- Modifications non prises en compte : vérifier la branche Git courante (`git branch`) et faire `git pull`.
+
+Bonnes pratiques
+----------------
+- Commits fréquents et messages clairs
+- Tester localement avant de forcer un push sur `master`
+- Faire une sauvegarde (tag ou branche) de l'ancien `master` avant d'écraser
+
+Besoin d'aide supplémentaire ?
+-----------------------------
+Je peux :
+- ajouter un guide pas-à-pas pour le déploiement (Forge / Docker / Capistrano)
+- créer des tests automatisés pour la suppression et l'upload de la photo de profil
+- ajouter un script d'initialisation pour dev (setup.sh/ps1)
+
+Dis-moi ce que tu veux que j'ajoute ou modifie dans ce README, ou si tu veux que je l'enregistre directement dans le dépôt (je peux créer/mettre à jour `README.md`).
+
