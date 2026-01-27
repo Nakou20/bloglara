@@ -1,29 +1,34 @@
-
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-900 dark:text-gray-100 leading-tight">
             {{ __('Supprimer l\'article') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Êtes-vous sûr de vouloir supprimer cet article ?</h3>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        {{ $article->title }}
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg border border-gray-100 dark:border-gray-700">
+                <div class="p-8 text-center">
+                    <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Supprimer définitivement ?</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                        Êtes-vous sûr de vouloir supprimer l'article <span class="font-bold text-indigo-600 dark:text-indigo-400">"{{ $article->title }}"</span> ? Cette action est irréversible.
                     </p>
 
-                    <div class="mt-6 flex justify-end">
-                        <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-gray-700 bg-gray-200 hover:bg-gray-300 rounded px-4 py-2 mr-2">
+                    <div class="flex items-center justify-center gap-4">
+                        <a href="{{ route('dashboard') }}" class="px-6 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold rounded-xl transition-all">
                             Annuler
                         </a>
                         <form method="POST" action="{{ route('articles.destroy', $article->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white rounded px-4 py-2">
-                                Supprimer
+                            <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 transition-all hover:scale-105">
+                                Supprimer l'article
                             </button>
                         </form>
                     </div>
