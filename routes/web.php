@@ -8,7 +8,12 @@ use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $articles = \App\Models\Article::with('user', 'categories')->latest()->take(6)->get();
+    $articles = \App\Models\Article::with('user', 'categories')
+        ->where('draft', false)
+        ->orderBy('likes', 'desc')
+        ->latest()
+        ->take(6)
+        ->get();
     return view('welcome', compact('articles'));
 });
 

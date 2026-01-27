@@ -75,69 +75,22 @@
             </div>
         </div>
 
-        <!-- Latest Articles Grid -->
+        <!-- Featured Popular Articles Grid -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
             <div class="mb-10 lg:mb-14">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-1.5 h-10 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"></div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-1.5 h-10 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"></div>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
                         Dernières publications
-                    </h2>
-                </div>
+                        </h2>
+                    </div>
                 <p class="text-gray-600 dark:text-gray-400 ml-6 lg:ml-7">Découvrez les derniers articles de notre communauté</p>
             </div>
 
             @if($articles && $articles->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                    @foreach($articles as $article)
-                        <article class="group flex flex-col bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200/60 dark:border-gray-700/60 overflow-hidden h-full hover:-translate-y-2">
-                            <div class="p-6 lg:p-7 flex-1 flex flex-col">
-                                <!-- Categories & Date -->
-                                <div class="flex items-start justify-between mb-4 gap-3">
-                                    <div class="flex flex-wrap gap-2">
-                                        @foreach($article->categories->take(2) as $category)
-                                            <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-700/50">
-                                                #{{ $category->name }}
-                                            </span>
-                                        @endforeach
-                                    </div>
-                                    <time class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                                        {{ $article->created_at->diffForHumans() }}
-                                    </time>
-                                </div>
-
-                                <!-- Title -->
-                                <h3 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
-                                    <a href="{{ route('public.show', [$article->user_id, $article->id]) }}" class="hover:underline decoration-2 underline-offset-4">
-                                        {{ $article->title }}
-                                    </a>
-                                </h3>
-
-                                <!-- Excerpt -->
-                                <p class="text-gray-600 dark:text-gray-400 text-sm lg:text-base leading-relaxed mb-6 line-clamp-3 flex-1">
-                                    {{ Str::limit($article->content, 160) }}
-                                </p>
-
-                                <!-- Author & CTA -->
-                                <div class="pt-5 border-t border-gray-200/70 dark:border-gray-700/70 flex items-center justify-between gap-4 mt-auto">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold uppercase shadow-md ring-2 ring-white dark:ring-gray-800">
-                                            {{ substr($article->user->name, 0, 2) }}
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <span class="text-sm font-bold text-black dark:text-white">{{ $article->user->name }}</span>
-                                            <span class="text-xs text-gray-600 dark:text-gray-400 font-medium">Auteur</span>
-                                        </div>
-                                    </div>
-                                    <a href="{{ route('public.show', [$article->user_id, $article->id]) }}" class="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold text-sm transition-colors duration-200 group/link">
-                                        Lire
-                                        <svg class="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                    @foreach($articles as $index => $article)
+                        <x-article-card :article="$article" :index="$index" />
                     @endforeach
                 </div>
             @else
