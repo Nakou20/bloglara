@@ -66,7 +66,7 @@
                     </p>
                 </div>
             </div>
-            
+
             <!-- Background Elements -->
             <div class="absolute inset-0 -z-10 overflow-hidden">
                 <div class="absolute top-0 left-1/4 w-72 h-72 bg-purple-300/40 dark:bg-purple-600/20 rounded-full blur-3xl"></div>
@@ -86,7 +86,7 @@
                 </div>
                 <p class="text-gray-600 dark:text-gray-400 ml-6 lg:ml-7">Découvrez les derniers articles de notre communauté</p>
             </div>
-            
+
             @if($articles && $articles->count() > 0)
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     @foreach($articles as $article)
@@ -105,19 +105,19 @@
                                         {{ $article->created_at->diffForHumans() }}
                                     </time>
                                 </div>
-                                
+
                                 <!-- Title -->
                                 <h3 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-3 lg:mb-4 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
                                     <a href="{{ route('public.show', [$article->user_id, $article->id]) }}" class="hover:underline decoration-2 underline-offset-4">
                                         {{ $article->title }}
                                     </a>
                                 </h3>
-                                
+
                                 <!-- Excerpt -->
                                 <p class="text-gray-600 dark:text-gray-400 text-sm lg:text-base leading-relaxed mb-6 line-clamp-3 flex-1">
                                     {{ Str::limit($article->content, 160) }}
                                 </p>
-                                
+
                                 <!-- Author & CTA -->
                                 <div class="pt-5 border-t border-gray-200/70 dark:border-gray-700/70 flex items-center justify-between gap-4 mt-auto">
                                     <div class="flex items-center gap-3">

@@ -11,7 +11,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-medium mb-4">Détails de l'article</h3>
-                    
+
                     <!-- Input de titre de l'article -->
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Titre</label>
@@ -30,10 +30,10 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                             @foreach($categories as $category)
                                 <div class="flex items-center">
-                                    <input 
-                                        type="checkbox" 
-                                        name="categories[]" 
-                                        value="{{ $category->id }}" 
+                                    <input
+                                        type="checkbox"
+                                        name="categories[]"
+                                        value="{{ $category->id }}"
                                         id="category-{{ $category->id }}"
                                         class="rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-indigo-600 shadow-sm focus:ring-indigo-500"
                                     >

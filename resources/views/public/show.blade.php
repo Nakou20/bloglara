@@ -25,7 +25,7 @@
             <p class="text-gray-700 dark:text-gray-300">{{ $article->content }}</p>
         </div>
     </div>
-    
+
     <!-- Liste des commentaires -->
     @foreach ($article->comments as $comment)
         <!-- $comment représente un commentaire -->
@@ -34,7 +34,7 @@
             <p class="text-gray-500 text-sm">Publié le {{ $comment->created_at->format('d/m/Y') }} par {{ $comment->user->name }}</p>
         </div>
     @endforeach
-    
+
     @auth
     <!-- Le code affiché si la personne est connecté -->
         <!-- Ajout d'un commentaire -->
@@ -45,5 +45,11 @@
             <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Commenter</button>
         </form>
     @endauth
-    
+
+    @auth
+        <a href="{{ route('article.like', $article->id) }}" class="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+            <img src="/TortueGeniale.svg" alt="" class="h-12 w-6 text-white">
+            <span>{{$article->likes}}</span>
+        </a>
+    @endauth
 </x-guest-layout>

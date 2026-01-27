@@ -50,6 +50,7 @@ class UserController extends Controller
             'articles' => $articles
         ]);
     }
+    
     public function edit(Article $article)
     {
         // On vérifie que l'utilisateur est bien le créateur de l'article

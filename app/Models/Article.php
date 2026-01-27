@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Article
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title
  * @property string $content
  * @property bool|null $draft
+ * @property int|null $likes
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -35,14 +37,16 @@ class Article extends Model
 
 	protected $casts = [
 		'user_id' => 'int',
-		'draft' => 'bool'
+		'draft' => 'bool',
+		'likes' => 'int'
 	];
 
 	protected $fillable = [
 		'user_id',
 		'title',
 		'content',
-		'draft'
+		'draft',
+		'likes'
 	];
 
 	public function user()
@@ -63,6 +67,11 @@ class Article extends Model
 	public function comments()
 	{
 		return $this->hasMany(Comment::class);
+	}
+
+	public function likers(): BelongsToMany
+	{
+		return $this->belongsToMany(User::class, 'article_likes');
 	}
 
 }

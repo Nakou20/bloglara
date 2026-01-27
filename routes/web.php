@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/articles/{article}/update', [UserController::class, 'update'])->name('articles.update');
     Route::get('/articles/{article}/remove', [UserController::class, 'remove'])->name('articles.remove');
     Route::delete('/articles/{article}/destroy', [UserController::class, 'destroy'])->name('articles.destroy');
+    Route::get('/articles/{article}/like', [ArticleController::class, 'like'])->name('article.like');
 });
 
 require __DIR__.'/auth.php';

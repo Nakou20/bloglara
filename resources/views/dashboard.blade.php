@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-    @endif    
+    @endif
 
     <!-- Articles -->
     <div class="py-2">
