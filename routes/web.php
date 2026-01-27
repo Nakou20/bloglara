@@ -7,7 +7,8 @@ use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $articles = \App\Models\Article::with('user', 'categories')->latest()->take(6)->get();
+    return view('welcome', compact('articles'));
 });
 
 Route::post('/articles/store', [UserController::class, 'store'])->name('articles.store');
