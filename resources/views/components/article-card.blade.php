@@ -65,11 +65,9 @@
 
         <!-- Bouton de Like avec dégradé vif pour la visibilité -->
         <div class="flex-shrink-0">
-            <a href="{{ route('article.like', $article->id) }}" class="flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-110 group/like">
-                <svg class="w-6 h-6 mb-1 group-hover/like:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                </svg>
-                <span class="text-sm font-bold">{{ $article->likes ?? 0 }}</span>
+            <a href="{{ route('article.like', $article->id) }}" class="flex flex-col items-center justify-center w-20 h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 group/like border-2 border-amber-200/50">
+                <img src="/TortueGeniale.svg" alt="Like" class="w-12 h-12 mb-2 group-hover/like:rotate-12 transition-transform duration-300 drop-shadow-sm">
+                <span class="text-sm font-black">{{ $article->likes ?? 0 }}</span>
             </a>
         </div>
     </div>

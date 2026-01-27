@@ -58,9 +58,11 @@
     @endauth
 
     @auth
-        <a href="{{ route('article.like', $article->id) }}" class="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
-            <img src="/TortueGeniale.svg" alt="" class="h-12 w-6 text-white">
-            <span>{{$article->likes}}</span>
-        </a>
+        <div class="mt-8 flex justify-center">
+            <a href="{{ route('article.like', $article->id) }}" class="flex flex-col items-center justify-center w-24 h-28 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-110 group/like border-4 border-white">
+                <img src="/TortueGeniale.svg" alt="Like" class="w-16 h-16 mb-2 group-hover/like:rotate-12 transition-transform duration-300">
+                <span class="text-lg font-black">{{ $article->likes ?? 0 }}</span>
+            </a>
+        </div>
     @endauth
 </x-guest-layout>
