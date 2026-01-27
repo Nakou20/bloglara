@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,12 @@ class UserController extends Controller
 {
     public function create()
     {
-        return view('articles.create');
+        // Récupérer toutes les catégories pour les afficher dans le formulaire
+        $categories = Category::all();
+        
+        return view('articles.create', [
+            'categories' => $categories
+        ]);
     }
     public function store(Request $request)
     {
@@ -25,14 +31,8 @@ class UserController extends Controller
         // On crée l'article
         $article = Article::create($data); // $Article est l'objet article nouvellement créé
 
-        // Exemple pour ajouter la catégorie 1 à l'article
-        // $article->categories()->sync(1);
-
-        // Exemple pour ajouter des catégories à l'article
-        // $article->categories()->sync([1, 2, 3]);
-
-        // Exemple pour ajouter des catégories à l'article en venant du formulaire
-        // $article->categories()->sync($request->input('categories'));
+        // Synchronisation des catégories sélectionnées dans le formulaire
+        $article->categories()->sync($request->input('categories', []));
 
         // On redirige l'utilisateur vers la liste des articles
         return redirect()->route('dashboard');
@@ -57,9 +57,13 @@ class UserController extends Controller
             abort(403);
         }
 
-        // On retourne la vue avec l'article
+        // Récupérer toutes les catégories pour les afficher dans le formulaire
+        $categories = Category::all();
+
+        // On retourne la vue avec l'article et les catégories
         return view('articles.edit', [
-            'article' => $article
+            'article' => $article,
+            'categories' => $categories
         ]);
     }
 
@@ -78,6 +82,9 @@ class UserController extends Controller
 
         // On met à jour l'article
         $article->update($data);
+
+        // Synchronisation des catégories sélectionnées dans le formulaire
+        $article->categories()->sync($request->input('categories', []));
 
         // On redirige l'utilisateur vers la liste des articles (avec un flash)
         return redirect()->route('dashboard')->with('success', 'Article mis à jour !');

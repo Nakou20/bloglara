@@ -24,6 +24,28 @@
                         <textarea rows="15" name="content" id="content" placeholder="Rédigez votre article ici..." class="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ $article->content }}</textarea>
                     </div>
 
+                    <!-- Sélection des catégories -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Catégories</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            @foreach($categories as $category)
+                                <div class="flex items-center">
+                                    <input 
+                                        type="checkbox" 
+                                        name="categories[]" 
+                                        value="{{ $category->id }}" 
+                                        id="category-{{ $category->id }}"
+                                        {{ $article->categories->contains($category->id) ? 'checked' : '' }}
+                                        class="rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                    >
+                                    <label for="category-{{ $category->id }}" class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="flex items-center justify-between mt-6">
                         <!-- Action sur le formulaire -->
                         <div class="flex items-center">

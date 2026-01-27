@@ -9,6 +9,17 @@
         Publié le {{ $article->created_at->format('d/m/Y') }} par <a href="{{ route('public.index', $article->user->id) }}">{{ $article->user->name }}</a>
     </div>
 
+    <!-- Affichage des catégories -->
+    @if($article->categories->count() > 0)
+        <div class="mt-3 flex flex-wrap gap-2">
+            @foreach($article->categories as $category)
+                <span class="inline-flex items-center px-3 py-1 rounded-md text-sm bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                    #{{ $category->name }}
+                </span>
+            @endforeach
+        </div>
+    @endif
+
     <div>
         <div class="p-6 text-gray-900 dark:text-gray-100">
             <p class="text-gray-700 dark:text-gray-300">{{ $article->content }}</p>
