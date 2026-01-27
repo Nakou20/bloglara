@@ -8,13 +8,28 @@ use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $articles = \App\Models\Article::with('user', 'categories')
+    // On récupère le tag de recherche s'il existe dans l'URL
+    $selectedTag = request()->query('tag');
+    
+    // Construction de la requête pour les articles
+    $query = \App\Models\Article::with('user', 'categories', 'tags')
         ->where('draft', false)
         ->orderBy('likes', 'desc')
-        ->latest()
-        ->take(6)
-        ->get();
-    return view('welcome', compact('articles'));
+        ->latest();
+
+    // Si un tag est spécifié, on filtre les articles
+    if ($selectedTag) {
+        $query->whereHas('tags', function ($q) use ($selectedTag) {
+            $q->where('name', $selectedTag);
+        });
+    }
+
+    $articles = $query->take(6)->get();
+    
+    // On récupère tous les tags pour les afficher comme filtres sur la page d'accueil
+    $allTags = \App\Models\Tag::has('articles')->get();
+
+    return view('welcome', compact('articles', 'allTags', 'selectedTag'));
 });
 
 Route::post('/articles/store', [UserController::class, 'store'])->name('articles.store');

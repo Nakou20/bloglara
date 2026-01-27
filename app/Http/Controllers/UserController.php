@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -13,8 +14,12 @@ class UserController extends Controller
         // Récupérer toutes les catégories pour les afficher dans le formulaire
         $categories = Category::all();
         
+        // Récupérer tous les tags pour les afficher dans le formulaire
+        $tags = Tag::all();
+        
         return view('articles.create', [
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags
         ]);
     }
     public function store(Request $request)
@@ -33,6 +38,26 @@ class UserController extends Controller
 
         // Synchronisation des catégories sélectionnées dans le formulaire
         $article->categories()->sync($request->input('categories', []));
+
+        // On récupère les tags sélectionnés via les cases à cocher
+        $tagIds = $request->input('tags', []);
+
+        // Gestion des nouveaux tags saisis manuellement (séparés par des virgules)
+        $newTagsString = $request->input('new_tags');
+        if (!empty($newTagsString)) {
+            // On sépare la chaîne par les virgules et on nettoie les espaces
+            $names = array_map('trim', explode(',', $newTagsString));
+            foreach ($names as $name) {
+                if ($name) {
+                    // On crée le tag s'il n'existe pas, ou on le récupère
+                    $tag = Tag::firstOrCreate(['name' => $name]);
+                    $tagIds[] = $tag->id;
+                }
+            }
+        }
+
+        // Synchronisation finale de tous les tags (existants + nouveaux), sans doublons
+        $article->tags()->sync(array_unique($tagIds));
 
         // On redirige l'utilisateur vers la liste des articles
         return redirect()->route('dashboard');
@@ -61,10 +86,14 @@ class UserController extends Controller
         // Récupérer toutes les catégories pour les afficher dans le formulaire
         $categories = Category::all();
 
-        // On retourne la vue avec l'article et les catégories
+        // Récupérer tous les tags pour les afficher dans le formulaire
+        $tags = Tag::all();
+
+        // On retourne la vue avec l'article, les catégories et les tags
         return view('articles.edit', [
             'article' => $article,
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags
         ]);
     }
 
@@ -86,6 +115,26 @@ class UserController extends Controller
 
         // Synchronisation des catégories sélectionnées dans le formulaire
         $article->categories()->sync($request->input('categories', []));
+
+        // On récupère les tags sélectionnés via les cases à cocher
+        $tagIds = $request->input('tags', []);
+
+        // Gestion des nouveaux tags saisis manuellement (séparés par des virgules)
+        $newTagsString = $request->input('new_tags');
+        if (!empty($newTagsString)) {
+            // On sépare la chaîne par les virgules et on nettoie les espaces
+            $names = array_map('trim', explode(',', $newTagsString));
+            foreach ($names as $name) {
+                if ($name) {
+                    // On crée le tag s'il n'existe pas, ou on le récupère
+                    $tag = Tag::firstOrCreate(['name' => $name]);
+                    $tagIds[] = $tag->id;
+                }
+            }
+        }
+
+        // Synchronisation finale de tous les tags (existants + nouveaux), sans doublons
+        $article->tags()->sync(array_unique($tagIds));
 
         // On redirige l'utilisateur vers la liste des articles (avec un flash)
         return redirect()->route('dashboard')->with('success', 'Article mis à jour !');

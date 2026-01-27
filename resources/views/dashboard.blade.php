@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-900 leading-tight">
             {{ __('Votre Dashboard') }}
         </h2>
     </x-slot>
@@ -25,10 +25,10 @@
                         @if ($article->user_id === Auth::id())
                             <x-slot name="actions">
                                 <div class="flex items-center gap-2">
-                                    <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center px-3 py-1.5 bg-indigo-600 border border-transparent rounded-lg font-bold text-[10px] text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 transition duration-150 shadow-md shadow-indigo-500/20">
+                                    <a href="{{ route('articles.edit', $article->id) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-blue-700 rounded-lg font-bold text-[11px] text-white uppercase tracking-widest hover:bg-blue-700 transition duration-150 shadow-sm">
                                         Modifier
                                     </a>
-                                    <a href="{{ route('articles.remove', $article->id) }}" class="inline-flex items-center px-3 py-1.5 bg-red-600 border border-transparent rounded-lg font-bold text-[10px] text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 transition duration-150 shadow-md shadow-red-500/20">
+                                    <a href="{{ route('articles.remove', $article->id) }}" class="inline-flex items-center px-4 py-2 bg-red-600 border border-red-700 rounded-lg font-bold text-[11px] text-white uppercase tracking-widest hover:bg-red-700 transition duration-150 shadow-sm">
                                         Supprimer
                                     </a>
                                 </div>

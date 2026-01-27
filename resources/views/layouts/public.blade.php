@@ -13,17 +13,10 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <script>
-            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark')
-            }
-        </script>
+        <!-- Suppression du script de mode sombre pour forcer le thème clair -->
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-white">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 {{ $slot }}
             </div>

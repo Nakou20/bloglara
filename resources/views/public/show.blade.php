@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="text-center">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-900 leading-tight">
             {{ $article->title }}
         </h2>
     </div>
@@ -13,25 +13,36 @@
     @if($article->categories->count() > 0)
         <div class="mt-3 flex flex-wrap gap-2">
             @foreach($article->categories as $category)
-                <span class="inline-flex items-center px-3 py-1 rounded-md text-sm bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                <span class="inline-flex items-center px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700">
                     #{{ $category->name }}
                 </span>
             @endforeach
         </div>
     @endif
 
+    <!-- Affichage des tags -->
+    @if($article->tags->count() > 0)
+        <div class="mt-2 flex flex-wrap gap-2">
+            @foreach($article->tags as $tag)
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-100">
+                    {{ $tag->name }}
+                </span>
+            @endforeach
+        </div>
+    @endif
+
     <div>
-        <div class="p-6 text-gray-900 dark:text-gray-100">
-            <p class="text-gray-700 dark:text-gray-300">{{ $article->content }}</p>
+        <div class="p-6 text-gray-900">
+            <p class="text-gray-700">{{ $article->content }}</p>
         </div>
     </div>
 
     <!-- Liste des commentaires -->
     @foreach ($article->comments as $comment)
         <!-- $comment représente un commentaire -->
-        <div class="mt-4 p-4 border rounded">
-            <p class="text-gray-700 dark:text-gray-300">{{ $comment->content }}</p>
-            <p class="text-gray-500 text-sm">Publié le {{ $comment->created_at->format('d/m/Y') }} par {{ $comment->user->name }}</p>
+        <div class="mt-4 p-4 border border-gray-100 bg-gray-50 rounded-lg shadow-sm">
+            <p class="text-gray-700">{{ $comment->content }}</p>
+            <p class="text-gray-500 text-xs mt-2">Publié le {{ $comment->created_at->format('d/m/Y') }} par <strong>{{ $comment->user->name }}</strong></p>
         </div>
     @endforeach
 
