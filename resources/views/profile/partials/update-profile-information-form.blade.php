@@ -48,7 +48,7 @@
         </div>
 
         <div>
-            <x-input-label for="profile_photo" :value="__('Photo de profil')" />
+            <x-input-label for="profile_photo" :value="__('Photo de profil (optionnel)')" />
             <input id="profile_photo" name="profile_photo" type="file" accept="image/*" class="mt-1 block w-full" />
             @if($user->profile_photo)
                 <div class="mt-2">
