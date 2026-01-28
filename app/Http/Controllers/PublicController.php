@@ -61,14 +61,20 @@ class PublicController extends Controller
         // On charge également les relations pour optimiser les performances (Eager Loading)
         $query = Article::with('user', 'categories', 'tags', 'likers')
             ->where('draft', false)
+            ->orderBy('likes', 'desc')
             ->latest();
 
         // Si l'utilisateur a saisi un terme de recherche
         if ($search) {
             $query->where(function ($q) use ($search) {
-                // On recherche le terme dans le titre ou le contenu de l'article
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%");
+                // On recherche le terme dans les tags
+                $q->whereHas('tags', function ($tagQuery) use ($search) {
+                    $tagQuery->where('name', 'like', "%{$search}%");
+                })
+                // OU dans les catégories
+                ->orWhereHas('categories', function ($catQuery) use ($search) {
+                    $catQuery->where('name', 'like', "%{$search}%");
+                });
             });
         }
 

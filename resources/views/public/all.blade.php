@@ -22,7 +22,7 @@
                             type="text" 
                             name="search" 
                             value="{{ $search }}" 
-                            placeholder="Rechercher un article par titre ou contenu..." 
+                            placeholder="Rechercher par tag ou catégorie..." 
                             class="block w-full pl-11 pr-24 py-4 bg-white border-2 border-gray-100 rounded-2xl shadow-sm focus:border-indigo-500 focus:ring-0 text-gray-900 placeholder-gray-400 transition-all duration-300"
                         >
                         <div class="absolute inset-y-2 right-2 flex">
