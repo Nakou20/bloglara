@@ -11,12 +11,16 @@ class ArticleController extends Controller
     {
         $user = auth()->user();
         
-        $article->likers()->toggle($user->id);
+        $results = $article->likers()->toggle($user->id);
+        $liked = count($results['attached']) > 0;
         
-        $article->update([
-            'likes' => $article->likers()->count()
-        ]);
+        $count = $article->likers()->count();
+        $article->update(['likes' => $count]);
 
-        return redirect()->back();
+        return response()->json([
+            'success' => true,
+            'liked' => $liked,
+            'likes_count' => $count
+        ]);
     }
 }

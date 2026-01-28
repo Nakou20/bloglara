@@ -15,7 +15,10 @@ class PublicController extends Controller
     public function index(User $user)
     {
         // On récupère les articles publiés de l'utilisateur
-        $articles = Article::where('user_id', $user->id)->where('draft', 0)->get();
+        $articles = Article::with('user', 'categories', 'tags', 'likers')
+            ->where('user_id', $user->id)
+            ->where('draft', 0)
+            ->get();
 
         // On retourne la vue avec les articles et l'utilisateur
         return view('public.index', [
@@ -56,7 +59,7 @@ class PublicController extends Controller
 
         // Préparation de la requête de base pour les articles publiés
         // On charge également les relations pour optimiser les performances (Eager Loading)
-        $query = Article::with('user', 'categories', 'tags')
+        $query = Article::with('user', 'categories', 'tags', 'likers')
             ->where('draft', false)
             ->latest();
 

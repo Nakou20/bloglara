@@ -12,7 +12,7 @@ Route::get('/', function () {
     $selectedTag = request()->query('tag');
 
     // Construction de la requête pour les articles
-    $query = \App\Models\Article::with('user', 'categories', 'tags')
+    $query = \App\Models\Article::with('user', 'categories', 'tags', 'likers')
         ->where('draft', false)
         ->orderBy('likes', 'desc')
         ->latest();

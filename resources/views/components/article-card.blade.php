@@ -71,12 +71,40 @@
         </div>
 
         @auth
-        <!-- Bouton de Like avec dégradé vif pour la visibilité -->
-        <div class="flex-shrink-0">
-            <a href="{{ route('article.like', $article->id) }}" class="flex flex-col items-center justify-center w-20 h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 group/like border-2 border-amber-200/50">
-                <img src="/TortueGeniale.svg" alt="Like" class="w-12 h-12 mb-2 group-hover/like:rotate-12 transition-transform duration-300 drop-shadow-sm">
-                <span class="text-sm font-black">{{ $article->likes ?? 0 }}</span>
-            </a>
+        <!-- Bouton de Like avec Alpine.js pour l'interaction AJAX -->
+        <div class="flex-shrink-0" 
+             x-data="{ 
+                likesCount: {{ $article->likes ?? 0 }}, 
+                liked: {{ $article->likers->contains(auth()->id()) ? 'true' : 'false' }},
+                loading: false,
+                toggleLike() {
+                    if (this.loading) return;
+                    this.loading = true;
+                    
+                    fetch('{{ route('article.like', $article->id) }}', {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.likesCount = data.likes_count;
+                            this.liked = data.liked;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error))
+                    .finally(() => this.loading = false);
+                }
+             }">
+            <button @click.prevent="toggleLike()" 
+                    class="flex flex-col items-center justify-center w-20 h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 border-amber-200/50 text-white transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 group/like border-2">
+                <img src="/TortueGeniale.svg" alt="Like" 
+                     :class="loading ? 'animate-bounce' : 'group-hover/like:rotate-12'"
+                     class="w-12 h-12 mb-2 transition-transform duration-300 drop-shadow-sm">
+                <span class="text-sm font-black" x-text="likesCount"></span>
+            </button>
         </div>
         @endauth
     </div>
