@@ -28,6 +28,13 @@
                         </a>
                     </div>
 
+                    <!-- Center - Main Navigation -->
+                    <div class="hidden sm:flex items-center justify-center flex-1">
+                        <a href="{{ route('articles.all') }}" class="px-6 py-2 rounded-full text-sm font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 shadow-sm hover:bg-indigo-100 transition-all duration-200">
+                            Tous les articles
+                        </a>
+                    </div>
+
                     <!-- Right side - Actions -->
                     <div class="flex items-center gap-3 lg:gap-4">
                         @if (Route::has('login'))
@@ -37,11 +44,11 @@
                                 </a>
                             @else
                                 <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-700 hover:text-indigo-600 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100">
-                                    Se connecter
+                                    Connexion
                                 </a>
                                 @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="px-4 lg:px-6 py-2 lg:py-2.5 text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all duration-200 shadow-lg shadow-indigo-500/40 hover:shadow-indigo-500/60 hover:scale-105">
-                                        S'inscrire
+                                    <a href="{{ route('register') }}" class="px-4 lg:px-6 py-2 lg:py-2.5 text-sm font-bold bg-gray-900 text-white rounded-xl transition-all duration-200 shadow-lg hover:bg-gray-800 hover:scale-105">
+                                        Inscription
                                     </a>
                                 @endif
                             @endauth

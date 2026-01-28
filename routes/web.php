@@ -32,6 +32,9 @@ Route::get('/', function () {
     return view('welcome', compact('articles', 'allTags', 'selectedTag'));
 });
 
+// Route pour afficher tous les articles avec recherche
+Route::get('/articles', [PublicController::class, 'all'])->name('articles.all');
+
 Route::post('/articles/store', [UserController::class, 'store'])->name('articles.store');
 Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
 Route::post('/comments/store', [CommentController::class, 'store'])->name('comments.store');
