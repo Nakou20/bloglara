@@ -26,7 +26,7 @@ Installation (locale)
 
 ```bash
 cd ~
-git clone <URL_DU_DEPOT>
+git clone git@github.com:Nakou20/bloglara.git
 cd bloglara
 ```
 
